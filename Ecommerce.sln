@@ -19,9 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend.gateway", "src\gate
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Frontend.gateway", "src\gateways\Frontend.gateway\Frontend.gateway.csproj", "{8F9CB7C1-82A9-44DB-AC45-59B57EFB4B25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.api", "src\microservices\Auth.api\Auth.api.csproj", "{C4365941-EEF4-4CF9-B454-B8FBCB37832F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.api", "src\microservices\Auth.api\Auth.api.csproj", "{C4365941-EEF4-4CF9-B454-B8FBCB37832F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart.api", "src\microservices\Cart.api\Cart.api.csproj", "{2CDA9F0A-6E3B-4542-9E04-204C7C43ABD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cart.api", "src\microservices\Cart.api\Cart.api.csproj", "{2CDA9F0A-6E3B-4542-9E04-204C7C43ABD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{E065675B-9617-403F-9ECC-F0CD2955EB74}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +68,7 @@ Global
 		{8F9CB7C1-82A9-44DB-AC45-59B57EFB4B25} = {EBD87601-7D17-42DF-89E2-5BA08E0D1290}
 		{C4365941-EEF4-4CF9-B454-B8FBCB37832F} = {4E5BC9EA-19BB-4BCC-8B24-A3EEA7DF7364}
 		{2CDA9F0A-6E3B-4542-9E04-204C7C43ABD1} = {4E5BC9EA-19BB-4BCC-8B24-A3EEA7DF7364}
+		{E065675B-9617-403F-9ECC-F0CD2955EB74} = {F6C5CC2D-7E31-4D70-B301-D33B06924F4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B97EAC5E-1ABE-4117-B1A5-19F67672A19C}
