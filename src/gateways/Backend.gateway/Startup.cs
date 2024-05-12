@@ -1,15 +1,13 @@
-﻿using Auth.api.Repository;
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Utility;
-using Utility.Encryption;
 using Utility.Models;
 
-namespace Auth.api
+namespace Backend.gateway
 {
     public class Startup(IConfiguration configuration)
     {
@@ -19,16 +17,17 @@ namespace Auth.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMongoDb(Configuration);
-            services.AddJwt(Configuration);
-            services.AddTransient<IEncryptor, Encryptor>();
-            services.AddSingleton<IUserRepository>(sp =>
-              new UserRepository(sp.GetService<IMongoDatabase>() ?? throw new Exception("IMongoDatabase not found"))
-            );
-            services.AddSwaggerGen(c =>
+            services.AddOcelot(Configuration);
+            services.AddJwtAuthentication(Configuration); // JWT Configuration
+
+            services.AddCors(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth", Version = "v1" });
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
             });
+
             services.AddHealthChecks()
                 .AddMongoDb(
                     mongodbConnectionString: (
@@ -38,27 +37,23 @@ namespace Auth.api
                     name: "mongo",
                     failureStatus: HealthStatus.Unhealthy
                 );
+
             services.AddHealthChecksUI().AddInMemoryStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger();
+            app.UseMiddleware<RequestResponseLogging>();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog V1");
-            });
+            app.UseCors("CorsPolicy");
 
-            var option = new RewriteOptions();
-            option.AddRedirect("^$", "swagger");
-            app.UseRewriter(option);
+            app.UseAuthentication();
 
             app.UseHealthChecks("/healthz", new HealthCheckOptions
             {
@@ -68,16 +63,11 @@ namespace Auth.api
 
             app.UseHealthChecksUI();
 
-            app.UseHttpsRedirection();
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "healthchecks-ui");
+            app.UseRewriter(option);
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            await app.UseOcelot();
         }
     }
 }

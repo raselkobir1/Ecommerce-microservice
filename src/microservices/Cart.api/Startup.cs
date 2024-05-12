@@ -30,7 +30,7 @@ namespace Cart.api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Catalog", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cart", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
