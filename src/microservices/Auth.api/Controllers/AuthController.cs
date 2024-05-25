@@ -1,5 +1,6 @@
 ﻿using Auth.api.Models;
 using Auth.api.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Utility.Encryption;
@@ -11,7 +12,8 @@ namespace Auth.api.Controllers
     [ApiController]
     public class AuthController(IUserRepository userRepository, IJwtBuilder jwtBuilder, IEncryptor encryptor) : ControllerBase
     {
-        [HttpPost("login")] 
+        [AllowAnonymous]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] User user, [FromQuery(Name = "d")] string destination = "frontend")
         {
             var u = userRepository.GetUser(user.Email);
@@ -54,6 +56,7 @@ namespace Auth.api.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("validate")]
         public IActionResult Validate([FromQuery(Name = "email")] string email, [FromQuery(Name = "token")] string token)
         {
@@ -72,6 +75,29 @@ namespace Auth.api.Controllers
             }
 
             return Ok(userId);
+        }
+
+        // Role wise policy based authrization check.
+        [Authorize("Admin")]
+        //[Authorize("User")]
+        [HttpGet("GetAdminOrUser")]
+        public IActionResult GetAdminOrUser()
+        {
+            return Ok("Accessed Admin or User");
+        }
+
+        [Authorize("User")]
+        [HttpGet("GetUser")]
+        public IActionResult GetUser()
+        {
+            return  Ok("Accessed User");
+        }
+
+        [Authorize("SuperAdmin")]
+        [HttpGet("SuperAdminAccess")]
+        public IActionResult GetSuperAdminAccess()
+        {
+            return Ok("Accessed SuperAdminAccess");
         }
     }
 }

@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{E06567
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utilities", "utilities", "{9C90466B-44E5-4418-83E9-2DC5FE70FB31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "src\utilities\Utility\Utility.csproj", "{5D99E6ED-4C01-4C62-810F-AC60D33DC93C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "src\utilities\Utility\Utility.csproj", "{5D99E6ED-4C01-4C62-810F-AC60D33DC93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

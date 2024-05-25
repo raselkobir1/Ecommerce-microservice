@@ -22,8 +22,9 @@ namespace Utility.JWT
             var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-            new Claim("userId", userId)
-        };
+                 new Claim(ClaimTypes.Role, "Admin"), // Need to add role dynamically
+                 new Claim("userId", userId)
+            };
             var expirationDate = DateTime.Now.AddMinutes(_options.ExpiryMinutes);
             var jwt = new JwtSecurityToken(claims: claims, signingCredentials: signingCredentials, expires: expirationDate);
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

@@ -10,11 +10,11 @@ namespace Auth.api.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; init; }
+        public string? Id { get; init; } = string.Empty;
         public required string Email { get; init; }
         public required string Password { get; set; }
-        public string? Salt { get; set; }
-        public bool IsAdmin { get; init; }
+        public string? Salt { get; set; } = string.Empty;
+        public bool IsAdmin { get; init; } = true;
 
         public void SetPassword(string password, IEncryptor encryptor)
         {
