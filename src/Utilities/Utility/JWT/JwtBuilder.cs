@@ -1,13 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Utility.Models;
 
 namespace Utility.JWT
@@ -23,6 +19,7 @@ namespace Utility.JWT
             var claims = new[]
             {
                  new Claim(ClaimTypes.Role, "Admin"), // Need to add role dynamically
+                 new Claim(ClaimTypes.DateOfBirth, "1996-05-10"), // Need to add DOB dynamically
                  new Claim("userId", userId)
             };
             var expirationDate = DateTime.Now.AddMinutes(_options.ExpiryMinutes);
@@ -43,7 +40,7 @@ namespace Utility.JWT
             ClaimsIdentity identity;
             try
             {
-                identity = (ClaimsIdentity)principal.Identity;
+                identity = (ClaimsIdentity)principal?.Identity;
             }
             catch (NullReferenceException)
             {
@@ -58,7 +55,7 @@ namespace Utility.JWT
             return userId;
         }
 
-        private ClaimsPrincipal GetPrincipal(string token)
+        private ClaimsPrincipal? GetPrincipal(string token)
         {
             try
             {

@@ -67,10 +67,16 @@ namespace Auth.api
                 );
             services.AddHealthChecksUI().AddInMemoryStorage();
 
+            // Custom Policy based authorization
+            services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
+
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Admin", policy => policy.AddRequirements(new RoleRequirement("Admin"), new RoleRequirement("Accounting")));
+                options.AddPolicy("Over18Policy", policy =>
+                        policy.Requirements.Add(new MinimumAgeRequirement(18)));
+
+                options.AddPolicy("Admin", policy => policy.AddRequirements(new RoleRequirement("Admin")));
                 options.AddPolicy("Accounting", policy => policy.AddRequirements(new RoleRequirement("Accounting")));
                 options.AddPolicy("Product", policy => policy.AddRequirements(new RoleRequirement("Product")));
                 options.AddPolicy("User", policy => policy.AddRequirements(new RoleRequirement("User")));

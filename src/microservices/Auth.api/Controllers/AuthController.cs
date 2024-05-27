@@ -78,7 +78,7 @@ namespace Auth.api.Controllers
         }
 
         // Role wise policy based authrization check.
-        [Authorize("Admin")]
+        [Authorize(Policy = "Admin")]
         //[Authorize("User")]
         [HttpGet("GetAdminOrUser")]
         public IActionResult GetAdminOrUser()
@@ -86,18 +86,26 @@ namespace Auth.api.Controllers
             return Ok("Accessed Admin or User");
         }
 
-        [Authorize("User")]
+        [Authorize(Policy = "User")]
         [HttpGet("GetUser")]
         public IActionResult GetUser()
         {
             return  Ok("Accessed User");
         }
 
-        [Authorize("SuperAdmin")]
+        [Authorize(Policy = "SuperAdmin")]
         [HttpGet("SuperAdminAccess")]
         public IActionResult GetSuperAdminAccess()
         {
             return Ok("Accessed SuperAdminAccess");
         }
+
+        [HttpGet("age-restricted")]
+        [Authorize(Policy = "Over18Policy")]
+        public IActionResult GetForAdults()
+        {
+            return Ok("This endpoint is accessible only for users over 18.");
+        }
+
     }
 }
