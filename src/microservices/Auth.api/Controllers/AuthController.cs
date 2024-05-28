@@ -1,7 +1,6 @@
 ﻿using Auth.api.Models;
 using Auth.api.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Utility.Encryption;
 using Utility.JWT;
@@ -79,7 +78,6 @@ namespace Auth.api.Controllers
 
         // Role wise policy based authrization check.
         [Authorize(Policy = "Admin")]
-        //[Authorize("User")]
         [HttpGet("GetAdminOrUser")]
         public IActionResult GetAdminOrUser()
         {
@@ -98,6 +96,13 @@ namespace Auth.api.Controllers
         public IActionResult GetSuperAdminAccess()
         {
             return Ok("Accessed SuperAdminAccess");
+        }
+
+        [Authorize(Policy = "ManagerOrAdmin")]
+        [HttpGet("ManagerOrAdmin")]
+        public IActionResult GetSManagerOrAdminAccess()
+        {
+            return Ok("Accessed ManagerOrAdmin");
         }
 
         [HttpGet("age-restricted")]

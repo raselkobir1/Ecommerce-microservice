@@ -1,6 +1,5 @@
 ﻿using Catelog.Api.Models;
 using Catelog.Api.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catelog.Api.Controllers

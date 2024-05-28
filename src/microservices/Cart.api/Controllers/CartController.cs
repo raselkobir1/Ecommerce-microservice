@@ -1,7 +1,6 @@
 ﻿using Cart.api.Models;
 using Cart.api.Repository;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cart.api.Controllers

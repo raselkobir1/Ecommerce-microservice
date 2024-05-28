@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utility.RoleManage
 {
@@ -25,6 +20,12 @@ namespace Utility.RoleManage
 
             string[] roles = role.Split(',');
             string expectedRole = requirement.Role;
+
+            //if (roles != null && (roles.Contains("SuperAdmin")))
+            //{
+            //    context.Succeed(requirement);
+            //    return Task.CompletedTask;
+            //}
 
             string[] requireRoles = requirements.Where(y => y.GetType() == typeof(RoleRequirement)).Select(x => ((RoleRequirement)x).Role).ToArray();
 

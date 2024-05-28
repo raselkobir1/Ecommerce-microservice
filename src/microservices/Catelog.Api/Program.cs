@@ -1,6 +1,4 @@
 using Catelog.Api;
-using Catelog.Api.Repository;
-using MongoDB.Driver;
 using Serilog;
 using Serilog.Events;
 

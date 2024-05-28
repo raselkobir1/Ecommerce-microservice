@@ -67,7 +67,7 @@ namespace Auth.api
                 );
             services.AddHealthChecksUI().AddInMemoryStorage();
 
-            // Custom Policy based authorization
+            // way -1: Custom Policy based authorization for complex requirment and more control
             services.AddScoped<IAuthorizationHandler, MinimumAgeHandler>();
             services.AddScoped<IAuthorizationHandler, RoleRequirementHandler>();
 
@@ -76,12 +76,29 @@ namespace Auth.api
                 options.AddPolicy("Over18Policy", policy =>
                         policy.Requirements.Add(new MinimumAgeRequirement(18)));
 
+                options.AddPolicy("SuperAdmin", policy => policy.AddRequirements(new RoleRequirement("SuperAdmin")));
                 options.AddPolicy("Admin", policy => policy.AddRequirements(new RoleRequirement("Admin")));
                 options.AddPolicy("Accounting", policy => policy.AddRequirements(new RoleRequirement("Accounting")));
                 options.AddPolicy("Product", policy => policy.AddRequirements(new RoleRequirement("Product")));
                 options.AddPolicy("User", policy => policy.AddRequirements(new RoleRequirement("User")));
-                options.AddPolicy("SuperAdmin", policy => policy.AddRequirements(new RoleRequirement("SuperAdmin")));
             });
+
+            // way -2:Simple Policy based authorization Authorize Middleware check on token value has contain Admin or other role which authorize policy set on controller
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            //    options.AddPolicy("ManagerOrAdmin", policy => policy.RequireRole("Manager", "Admin"));
+            //    options.AddPolicy("SuperAdmin", policy => policy.RequireRole("SuperAdmin"));
+            //});
+
+            //way -3: Another Custom Policy based authorization
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Admin", policy =>
+            //        policy.RequireAssertion(context =>
+            //            context.User.IsInRole("Admin") || context.User.IsInRole("SuperAdmin")));
+
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
